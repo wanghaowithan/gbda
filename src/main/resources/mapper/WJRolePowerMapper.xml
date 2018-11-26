@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjwy.gbda.mapper.WJRolePowerMapper">
+    <resultMap id="BaseResultMap" type="com.wjwy.gbda.entity.WJRolePower">
+        <id column="wj_r_p_id" jdbcType="INTEGER" property="wjRPId"/>
+        <result column="power_id" jdbcType="INTEGER" property="powerId"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="update_time" jdbcType="TIMESTAMP"
+                property="updateTime"/>
+    </resultMap>
+    <resultMap id="PowerResultMap"
+               type="com.wjwy.gbda.entity.WJRolePower" extends="BaseResultMap">
+        <association property="wjPower" javaType="com.wjwy.gbda.entity.WJPower">
+            <id column="power_id" jdbcType="INTEGER" property="powerId"/>
+            <result column="power_code" jdbcType="VARCHAR"
+                    property="powerCode"/>
+            <result column="power_info" jdbcType="VARCHAR"
+                    property="powerInfo"/>
+            <result column="power_url" jdbcType="VARCHAR" property="powerUrl"/>
+            <result column="pid" jdbcType="INTEGER" property="pid"/>
+            <result column="update_time" jdbcType="TIMESTAMP"
+                    property="updateTime"/>
+        </association>
+    </resultMap>
+    <resultMap id="RoleResultMap" type="com.wjwy.gbda.entity.WJRolePower"
+               extends="BaseResultMap">
+        <association property="wjRole" javaType="com.wjwy.gbda.entity.WJRole">
+            <id column="role_id" jdbcType="INTEGER" property="roleId"/>
+            <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+            <result column="update_time" jdbcType="TIMESTAMP"
+                    property="updateTime"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+        wj_r_p_id, power_id, role_id, update_time
+    </sql>
+    <sql id="Base">
+        wrp.wj_r_p_id, wrp.power_id, wrp.role_id, wrp.update_time
+    </sql>
+    <sql id="roleColumn">
+        r.role_id, r.role_name, r.update_time
+    </sql>
+    <sql id="powerColumn">
+        p.power_id,
+        p.power_code, p.power_info, p.power_url, p.pid, p.update_time
+    </sql>
+    <select id="selectRoleWithPower" resultMap="RoleResultMap"
+            parameterType="java.lang.Integer">
+        select<include refid="Base"/>,
+        <include refid="roleColumn"/>
+        from wj_role_power wrp , wj_role r, wj_power p where
+        r.role_id=wrp.role_id and p.power_id=wrp.power_id and
+        wrp.power_id=#{powerId,jdbcType=INTEGER}
+    </select>
+    <select id="selectPowerWithRole" resultMap="PowerResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base"/>,
+        <include
+                refid="powerColumn"/>
+        from wj_role_power wrp , wj_role r, wj_power p
+        where r.role_id=wrp.role_id and p.power_id=wrp.power_id and
+        wrp.role_id=#{roleId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_role_power
+        where wj_r_p_id = #{wjRPId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from wj_role_power
+        where wj_r_p_id = #{wjRPId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.wjwy.gbda.entity.WJRolePower"
+            keyProperty="wjRPId" useGeneratedKeys="true">
+        insert into wj_role_power (power_id, role_id, update_time)
+        values (#{powerId,jdbcType=INTEGER},
+                #{roleId,jdbcType=INTEGER},
+                #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective"
+            parameterType="com.wjwy.gbda.entity.WJRolePower"
+            keyProperty="wjRPId" useGeneratedKeys="true">
+        insert into wj_role_power
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="powerId != null">
+                power_id,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="powerId != null">
+                #{powerId,jdbcType=INTEGER},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.wjwy.gbda.entity.WJRolePower">
+        update wj_role_power
+        <set>
+            <if test="powerId != null">
+                power_id = #{powerId,jdbcType=INTEGER},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where wj_r_p_id = #{wjRPId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.wjwy.gbda.entity.WJRolePower">
+        update wj_role_power
+        set power_id    = #{powerId,jdbcType=INTEGER},
+            role_id     = #{roleId,jdbcType=INTEGER},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where wj_r_p_id = #{wjRPId,jdbcType=INTEGER}
+    </update>
+</mapper>

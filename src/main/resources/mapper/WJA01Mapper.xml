@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjwy.gbda.mapper.WJA01Mapper">
+    <resultMap id="BaseResultMap" type="com.wjwy.gbda.entity.WJA01">
+        <id column="A0100" jdbcType="VARCHAR" property="a0100"/>
+        <result column="B0110" jdbcType="VARCHAR" property="b0110"/>
+        <result column="A0101" jdbcType="VARCHAR" property="a0101"/>
+        <result column="A_spell" jdbcType="VARCHAR" property="aSpell"/>
+        <result column="A0104" jdbcType="VARCHAR" property="a0104"/>
+        <result column="A0107" jdbcType="TIMESTAMP" property="a0107"/>
+        <result column="A0117" jdbcType="VARCHAR" property="a0117"/>
+        <result column="A0114" jdbcType="VARCHAR" property="a0114"/>
+        <result column="birthplace" jdbcType="VARCHAR" property="birthplace"/>
+        <result column="A0141" jdbcType="TIMESTAMP" property="a0141"/>
+        <result column="A2205" jdbcType="VARCHAR" property="a2205"/>
+        <result column="A2210" jdbcType="TIMESTAMP" property="a2210"/>
+        <result column="A0151" jdbcType="NUMERIC" property="a0151"/>
+        <result column="seniority_begin" jdbcType="TIMESTAMP"
+                property="seniorityBegin"/>
+        <result column="seniority_end" jdbcType="TIMESTAMP"
+                property="seniorityEnd"/>
+        <result column="seniority_continue" jdbcType="TIMESTAMP"
+                property="seniorityContinue"/>
+        <result column="seniority_cut" jdbcType="VARCHAR"
+                property="seniorityCut"/>
+        <result column="seniority_note" jdbcType="VARCHAR"
+                property="seniorityNote"/>
+        <result column="work_units" jdbcType="VARCHAR" property="workUnits"/>
+        <result column="A0184" jdbcType="VARCHAR" property="a0184"/>
+        <result column="education_background" jdbcType="VARCHAR"
+                property="educationBackground"/>
+        <result column="education_begin" jdbcType="TIMESTAMP"
+                property="educationBegin"/>
+        <result column="education_end" jdbcType="TIMESTAMP"
+                property="educationEnd"/>
+        <result column="full_education" jdbcType="VARCHAR"
+                property="fullEducation"/>
+        <result column="full_education_info" jdbcType="VARCHAR"
+                property="fullEducationInfo"/>
+        <result column="now_education" jdbcType="VARCHAR"
+                property="nowEducation"/>
+        <result column="now_education_info" jdbcType="VARCHAR"
+                property="nowEducationInfo"/>
+        <result column="A0440" jdbcType="VARCHAR" property="a0440"/>
+        <result column="A0455" jdbcType="VARCHAR" property="a0455"/>
+        <result column="A8505" jdbcType="VARCHAR" property="a8505"/>
+        <result column="record_box" jdbcType="NUMERIC" property="recordBox"/>
+        <result column="is_copy" jdbcType="VARCHAR" property="isCopy"/>
+        <result column="record_count" jdbcType="INTEGER"
+                property="recordCount"/>
+        <result column="count" jdbcType="INTEGER" property="count"/>
+        <result column="A8515" jdbcType="TIMESTAMP" property="a8515"/>
+        <result column="A8520" jdbcType="VARCHAR" property="a8520"/>
+        <result column="update_time" jdbcType="TIMESTAMP"
+                property="updateTime"/>
+    </resultMap>
+    <resultMap id="AllResultMap" type="com.wjwy.gbda.entity.WJA01"
+               extends="BaseResultMap">
+        <association property="wjb01" javaType="com.wjwy.gbda.entity.WJB01"
+                     column="B0110"
+                     select="com.wjwy.gbda.mapper.WJB01Mapper.selectForA01">
+        </association>
+        <collection property="wjrsdamlList"
+                    ofType="WJRSDAML" column="A0100"
+                    select="com.wjwy.gbda.mapper.WJRSDAMLMapper.selectByA01">
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        A0100, B0110, A0101, A_spell, A0104, A0107, A0117, A0114, birthplace,
+               A0141, A2205,
+               A2210, A0151, seniority_begin, seniority_end, seniority_continue,
+               seniority_cut,
+               seniority_note, work_units, A0184, education_background,
+               education_begin, education_end,
+               full_education, full_education_info, now_education,
+               now_education_info, A0440, A0455,
+               A8505, record_box, is_copy, record_count, count, A8515, A8520,
+               update_time
+    </sql>
+    <select id="selectByB01" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_A01
+        where B0110 = #{b0110,jdbcType=VARCHAR}
+    </select>
+    <select id="selectForRSDAML" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_A01
+        where A0100=#{a0100,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_A01
+        where A0100 = #{a0100,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from wj_A01
+        where A0100 = #{a0100,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.wjwy.gbda.entity.WJA01">
+        <selectKey keyProperty="a0100" resultType="String" order="BEFORE">
+            select newId()
+        </selectKey>
+        insert into wj_A01 (A0100,
+        B0110,
+        A0101,
+        A_spell,
+        A0104,
+        A0107,
+        A0117,
+        A0114,
+        birthplace,
+        A0141,
+        A2205,
+        A2210,
+        A0151,
+        seniority_begin,
+        seniority_end,
+        seniority_continue,
+        seniority_cut,
+        seniority_note,
+        work_units,
+        A0184,
+        education_background,
+        education_begin,
+        education_end,
+        full_education,
+        full_education_info,
+        now_education,
+        now_education_info,
+        A0440,
+        A0455,
+        A8505,
+        record_box,
+        is_copy,
+        record_count,
+        count,
+        A8515,
+        A8520,
+        update_time)
+        values (#{a0100,jdbcType=VARCHAR},
+        #{b0110,jdbcType=VARCHAR},
+        #{a0101,jdbcType=VARCHAR},
+        #{aSpell,jdbcType=VARCHAR},
+        #{a0104,jdbcType=VARCHAR},
+        #{a0107,jdbcType=TIMESTAMP},
+        #{a0117,jdbcType=VARCHAR},
+        #{a0114,jdbcType=VARCHAR},
+        #{birthplace,jdbcType=VARCHAR},
+        #{a0141,jdbcType=TIMESTAMP},
+        #{a2205,jdbcType=VARCHAR},
+        #{a2210,jdbcType=TIMESTAMP},
+        #{a0151,jdbcType=NUMERIC},
+        #{seniorityBegin,jdbcType=TIMESTAMP},
+        #{seniorityEnd,jdbcType=TIMESTAMP},
+        #{seniorityContinue,jdbcType=TIMESTAMP},
+        #{seniorityCut,jdbcType=VARCHAR},
+        #{seniorityNote,jdbcType=VARCHAR},
+        #{workUnits,jdbcType=VARCHAR},
+        #{a0184,jdbcType=VARCHAR},
+        #{educationBackground,jdbcType=VARCHAR},
+        #{educationBegin,jdbcType=TIMESTAMP},
+        #{educationEnd,jdbcType=TIMESTAMP},
+        #{fullEducation,jdbcType=VARCHAR},
+        #{fullEducationInfo,jdbcType=VARCHAR},
+        #{nowEducation,jdbcType=VARCHAR},
+        #{nowEducationInfo,jdbcType=VARCHAR},
+        #{a0440,jdbcType=VARCHAR},
+        #{a0455,jdbcType=VARCHAR},
+        #{a8505,jdbcType=VARCHAR},
+        #{recordBox,jdbcType=NUMERIC},
+        #{isCopy,jdbcType=VARCHAR},
+        #{recordCount,jdbcType=INTEGER},
+        #{count,jdbcType=INTEGER},
+        #{a8515,jdbcType=TIMESTAMP},
+        #{a8520,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.wjwy.gbda.entity.WJA01">
+        <selectKey keyProperty="a0100" resultType="String" order="BEFORE">
+            select newId()
+        </selectKey>
+        insert into wj_A01
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="a0100 != null">
+                A0100,
+            </if>
+            <if test="b0110 != null">
+                B0110,
+            </if>
+            <if test="a0101 != null">
+                A0101,
+            </if>
+            <if test="aSpell != null">
+                A_spell,
+            </if>
+            <if test="a0104 != null">
+                A0104,
+            </if>
+            <if test="a0107 != null">
+                A0107,
+            </if>
+            <if test="a0117 != null">
+                A0117,
+            </if>
+            <if test="a0114 != null">
+                A0114,
+            </if>
+            <if test="birthplace != null">
+                birthplace,
+            </if>
+            <if test="a0141 != null">
+                A0141,
+            </if>
+            <if test="a2205 != null">
+                A2205,
+            </if>
+            <if test="a2210 != null">
+                A2210,
+            </if>
+            <if test="a0151 != null">
+                A0151,
+            </if>
+            <if test="seniorityBegin != null">
+                seniority_begin,
+            </if>
+            <if test="seniorityEnd != null">
+                seniority_end,
+            </if>
+            <if test="seniorityContinue != null">
+                seniority_continue,
+            </if>
+            <if test="seniorityCut != null">
+                seniority_cut,
+            </if>
+            <if test="seniorityNote != null">
+                seniority_note,
+            </if>
+            <if test="workUnits != null">
+                work_units,
+            </if>
+            <if test="a0184 != null">
+                A0184,
+            </if>
+            <if test="educationBackground != null">
+                education_background,
+            </if>
+            <if test="educationBegin != null">
+                education_begin,
+            </if>
+            <if test="educationEnd != null">
+                education_end,
+            </if>
+            <if test="fullEducation != null">
+                full_education,
+            </if>
+            <if test="fullEducationInfo != null">
+                full_education_info,
+            </if>
+            <if test="nowEducation != null">
+                now_education,
+            </if>
+            <if test="nowEducationInfo != null">
+                now_education_info,
+            </if>
+            <if test="a0440 != null">
+                A0440,
+            </if>
+            <if test="a0455 != null">
+                A0455,
+            </if>
+            <if test="a8505 != null">
+                A8505,
+            </if>
+            <if test="recordBox != null">
+                record_box,
+            </if>
+            <if test="isCopy != null">
+                is_copy,
+            </if>
+            <if test="recordCount != null">
+                record_count,
+            </if>
+            <if test="count != null">
+                count,
+            </if>
+            <if test="a8515 != null">
+                A8515,
+            </if>
+            <if test="a8520 != null">
+                A8520,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="a0100 != null">
+                #{a0100,jdbcType=VARCHAR},
+            </if>
+            <if test="b0110 != null">
+                #{b0110,jdbcType=VARCHAR},
+            </if>
+            <if test="a0101 != null">
+                #{a0101,jdbcType=VARCHAR},
+            </if>
+            <if test="aSpell != null">
+                #{aSpell,jdbcType=VARCHAR},
+            </if>
+            <if test="a0104 != null">
+                #{a0104,jdbcType=VARCHAR},
+            </if>
+            <if test="a0107 != null">
+                #{a0107,jdbcType=TIMESTAMP},
+            </if>
+            <if test="a0117 != null">
+                #{a0117,jdbcType=VARCHAR},
+            </if>
+            <if test="a0114 != null">
+                #{a0114,jdbcType=VARCHAR},
+            </if>
+            <if test="birthplace != null">
+                #{birthplace,jdbcType=VARCHAR},
+            </if>
+            <if test="a0141 != null">
+                #{a0141,jdbcType=TIMESTAMP},
+            </if>
+            <if test="a2205 != null">
+                #{a2205,jdbcType=VARCHAR},
+            </if>
+            <if test="a2210 != null">
+                #{a2210,jdbcType=TIMESTAMP},
+            </if>
+            <if test="a0151 != null">
+                #{a0151,jdbcType=NUMERIC},
+            </if>
+            <if test="seniorityBegin != null">
+                #{seniorityBegin,jdbcType=TIMESTAMP},
+            </if>
+            <if test="seniorityEnd != null">
+                #{seniorityEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="seniorityContinue != null">
+                #{seniorityContinue,jdbcType=TIMESTAMP},
+            </if>
+            <if test="seniorityCut != null">
+                #{seniorityCut,jdbcType=VARCHAR},
+            </if>
+            <if test="seniorityNote != null">
+                #{seniorityNote,jdbcType=VARCHAR},
+            </if>
+            <if test="workUnits != null">
+                #{workUnits,jdbcType=VARCHAR},
+            </if>
+            <if test="a0184 != null">
+                #{a0184,jdbcType=VARCHAR},
+            </if>
+            <if test="educationBackground != null">
+                #{educationBackground,jdbcType=VARCHAR},
+            </if>
+            <if test="educationBegin != null">
+                #{educationBegin,jdbcType=TIMESTAMP},
+            </if>
+            <if test="educationEnd != null">
+                #{educationEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fullEducation != null">
+                #{fullEducation,jdbcType=VARCHAR},
+            </if>
+            <if test="fullEducationInfo != null">
+                #{fullEducationInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="nowEducation != null">
+                #{nowEducation,jdbcType=VARCHAR},
+            </if>
+            <if test="nowEducationInfo != null">
+                #{nowEducationInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="a0440 != null">
+                #{a0440,jdbcType=VARCHAR},
+            </if>
+            <if test="a0455 != null">
+                #{a0455,jdbcType=VARCHAR},
+            </if>
+            <if test="a8505 != null">
+                #{a8505,jdbcType=VARCHAR},
+            </if>
+            <if test="recordBox != null">
+                #{recordBox,jdbcType=NUMERIC},
+            </if>
+            <if test="isCopy != null">
+                #{isCopy,jdbcType=VARCHAR},
+            </if>
+            <if test="recordCount != null">
+                #{recordCount,jdbcType=INTEGER},
+            </if>
+            <if test="count != null">
+                #{count,jdbcType=INTEGER},
+            </if>
+            <if test="a8515 != null">
+                #{a8515,jdbcType=TIMESTAMP},
+            </if>
+            <if test="a8520 != null">
+                #{a8520,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.wjwy.gbda.entity.WJA01">
+        update wj_A01
+        <set>
+            <if test="b0110 != null">
+                B0110 = #{b0110,jdbcType=VARCHAR},
+            </if>
+            <if test="a0101 != null">
+                A0101 = #{a0101,jdbcType=VARCHAR},
+            </if>
+            <if test="aSpell != null">
+                A_spell = #{aSpell,jdbcType=VARCHAR},
+            </if>
+            <if test="a0104 != null">
+                A0104 = #{a0104,jdbcType=VARCHAR},
+            </if>
+            <if test="a0107 != null">
+                A0107 = #{a0107,jdbcType=TIMESTAMP},
+            </if>
+            <if test="a0117 != null">
+                A0117 = #{a0117,jdbcType=VARCHAR},
+            </if>
+            <if test="a0114 != null">
+                A0114 = #{a0114,jdbcType=VARCHAR},
+            </if>
+            <if test="birthplace != null">
+                birthplace = #{birthplace,jdbcType=VARCHAR},
+            </if>
+            <if test="a0141 != null">
+                A0141 = #{a0141,jdbcType=TIMESTAMP},
+            </if>
+            <if test="a2205 != null">
+                A2205 = #{a2205,jdbcType=VARCHAR},
+            </if>
+            <if test="a2210 != null">
+                A2210 = #{a2210,jdbcType=TIMESTAMP},
+            </if>
+            <if test="a0151 != null">
+                A0151 = #{a0151,jdbcType=NUMERIC},
+            </if>
+            <if test="seniorityBegin != null">
+                seniority_begin = #{seniorityBegin,jdbcType=TIMESTAMP},
+            </if>
+            <if test="seniorityEnd != null">
+                seniority_end = #{seniorityEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="seniorityContinue != null">
+                seniority_continue = #{seniorityContinue,jdbcType=TIMESTAMP},
+            </if>
+            <if test="seniorityCut != null">
+                seniority_cut = #{seniorityCut,jdbcType=VARCHAR},
+            </if>
+            <if test="seniorityNote != null">
+                seniority_note = #{seniorityNote,jdbcType=VARCHAR},
+            </if>
+            <if test="workUnits != null">
+                work_units = #{workUnits,jdbcType=VARCHAR},
+            </if>
+            <if test="a0184 != null">
+                A0184 = #{a0184,jdbcType=VARCHAR},
+            </if>
+            <if test="educationBackground != null">
+                education_background = #{educationBackground,jdbcType=VARCHAR},
+            </if>
+            <if test="educationBegin != null">
+                education_begin = #{educationBegin,jdbcType=TIMESTAMP},
+            </if>
+            <if test="educationEnd != null">
+                education_end = #{educationEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fullEducation != null">
+                full_education = #{fullEducation,jdbcType=VARCHAR},
+            </if>
+            <if test="fullEducationInfo != null">
+                full_education_info = #{fullEducationInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="nowEducation != null">
+                now_education = #{nowEducation,jdbcType=VARCHAR},
+            </if>
+            <if test="nowEducationInfo != null">
+                now_education_info = #{nowEducationInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="a0440 != null">
+                A0440 = #{a0440,jdbcType=VARCHAR},
+            </if>
+            <if test="a0455 != null">
+                A0455 = #{a0455,jdbcType=VARCHAR},
+            </if>
+            <if test="a8505 != null">
+                A8505 = #{a8505,jdbcType=VARCHAR},
+            </if>
+            <if test="recordBox != null">
+                record_box = #{recordBox,jdbcType=NUMERIC},
+            </if>
+            <if test="isCopy != null">
+                is_copy = #{isCopy,jdbcType=VARCHAR},
+            </if>
+            <if test="recordCount != null">
+                record_count = #{recordCount,jdbcType=INTEGER},
+            </if>
+            <if test="count != null">
+                count = #{count,jdbcType=INTEGER},
+            </if>
+            <if test="a8515 != null">
+                A8515 = #{a8515,jdbcType=TIMESTAMP},
+            </if>
+            <if test="a8520 != null">
+                A8520 = #{a8520,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where A0100 = #{a0100,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.wjwy.gbda.entity.WJA01">
+        update wj_A01
+        set B0110                = #{b0110,jdbcType=VARCHAR},
+            A0101                = #{a0101,jdbcType=VARCHAR},
+            A_spell              = #{aSpell,jdbcType=VARCHAR},
+            A0104                = #{a0104,jdbcType=VARCHAR},
+            A0107                = #{a0107,jdbcType=TIMESTAMP},
+            A0117                = #{a0117,jdbcType=VARCHAR},
+            A0114                = #{a0114,jdbcType=VARCHAR},
+            birthplace           = #{birthplace,jdbcType=VARCHAR},
+            A0141                = #{a0141,jdbcType=TIMESTAMP},
+            A2205                = #{a2205,jdbcType=VARCHAR},
+            A2210                = #{a2210,jdbcType=TIMESTAMP},
+            A0151                = #{a0151,jdbcType=NUMERIC},
+            seniority_begin      = #{seniorityBegin,jdbcType=TIMESTAMP},
+            seniority_end        = #{seniorityEnd,jdbcType=TIMESTAMP},
+            seniority_continue   = #{seniorityContinue,jdbcType=TIMESTAMP},
+            seniority_cut        = #{seniorityCut,jdbcType=VARCHAR},
+            seniority_note       = #{seniorityNote,jdbcType=VARCHAR},
+            work_units           = #{workUnits,jdbcType=VARCHAR},
+            A0184                = #{a0184,jdbcType=VARCHAR},
+            education_background = #{educationBackground,jdbcType=VARCHAR},
+            education_begin      = #{educationBegin,jdbcType=TIMESTAMP},
+            education_end        = #{educationEnd,jdbcType=TIMESTAMP},
+            full_education       = #{fullEducation,jdbcType=VARCHAR},
+            full_education_info   = #{fullEducationInfo,jdbcType=VARCHAR},
+            now_education        = #{nowEducation,jdbcType=VARCHAR},
+            now_education_info    = #{nowEducationInfo,jdbcType=VARCHAR},
+            A0440                = #{a0440,jdbcType=VARCHAR},
+            A0455                = #{a0455,jdbcType=VARCHAR},
+            A8505                = #{a8505,jdbcType=VARCHAR},
+            record_box           = #{recordBox,jdbcType=NUMERIC},
+            is_copy               = #{isCopy,jdbcType=VARCHAR},
+            record_count         = #{recordCount,jdbcType=INTEGER},
+            count                = #{count,jdbcType=INTEGER},
+            A8515                = #{a8515,jdbcType=TIMESTAMP},
+            A8520                = #{a8520,jdbcType=VARCHAR},
+            update_time          = #{updateTime,jdbcType=TIMESTAMP}
+        where A0100 = #{a0100,jdbcType=VARCHAR}
+    </update>
+</mapper>

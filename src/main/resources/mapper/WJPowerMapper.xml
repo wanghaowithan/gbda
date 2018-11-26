@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjwy.gbda.mapper.WJPowerMapper">
+    <resultMap id="BaseResultMap" type="com.wjwy.gbda.entity.WJPower">
+        <id column="power_id" jdbcType="INTEGER" property="powerId"/>
+        <result column="power_code" jdbcType="VARCHAR" property="powerCode"/>
+        <result column="power_info" jdbcType="VARCHAR" property="powerInfo"/>
+        <result column="power_url" jdbcType="VARCHAR" property="powerUrl"/>
+        <result column="pid" jdbcType="INTEGER" property="pid"/>
+        <result column="update_time" jdbcType="TIMESTAMP"
+                property="updateTime"/>
+    </resultMap>
+    <resultMap id="AllResultMap" type="com.wjwy.gbda.entity.WJPower"
+               extends="BaseResultMap">
+        <collection property="wjRolePowerList" ofType="WJRolePower"
+                    select="com.wjwy.gbda.mapper.WJRolePowerMapper.selectRoleWithPower"
+                    column="power_id">
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        power_id, power_code, power_info, power_url, pid, update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+            resultMap="AllResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_power
+        where power_id = #{powerId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from wj_power
+        where power_id = #{powerId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.wjwy.gbda.entity.WJPower"
+            keyProperty="powerId" useGeneratedKeys="true">
+        insert into wj_power (power_code,
+                              power_info,
+                              power_url,
+                              pid,
+                              update_time)
+        values (#{powerCode,jdbcType=VARCHAR},
+                #{powerInfo,jdbcType=VARCHAR},
+                #{powerUrl,jdbcType=VARCHAR},
+                #{pid,jdbcType=INTEGER},
+                #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.wjwy.gbda.entity.WJPower"
+            keyProperty="powerId" useGeneratedKeys="true">
+        insert into wj_power
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="powerCode != null">
+                power_code,
+            </if>
+            <if test="powerInfo != null">
+                power_info,
+            </if>
+            <if test="powerUrl != null">
+                power_url,
+            </if>
+            <if test="pid != null">
+                pid,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="powerCode != null">
+                #{powerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="powerInfo != null">
+                #{powerInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="powerUrl != null">
+                #{powerUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="pid != null">
+                #{pid,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.wjwy.gbda.entity.WJPower">
+        update wj_power
+        <set>
+            <if test="powerCode != null">
+                power_code = #{powerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="powerInfo != null">
+                power_info = #{powerInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="powerUrl != null">
+                power_url = #{powerUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="pid != null">
+                pid = #{pid,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where power_id = #{powerId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.wjwy.gbda.entity.WJPower">
+        update wj_power
+        set power_code  = #{powerCode,jdbcType=VARCHAR},
+            power_info  = #{powerInfo,jdbcType=VARCHAR},
+            power_url   = #{powerUrl,jdbcType=VARCHAR},
+            pid         = #{pid,jdbcType=INTEGER},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where power_id = #{powerId,jdbcType=INTEGER}
+    </update>
+</mapper>

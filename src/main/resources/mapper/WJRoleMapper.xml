@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjwy.gbda.mapper.WJRoleMapper">
+    <resultMap id="BaseResultMap" type="com.wjwy.gbda.entity.WJRole">
+        <id column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="update_time" jdbcType="TIMESTAMP"
+                property="updateTime"/>
+    </resultMap>
+    <resultMap id="AllResultMap" type="com.wjwy.gbda.entity.WJRole"
+               extends="BaseResultMap">
+        <collection property="wjUserList" ofType="WJUser"
+                    select="com.wjwy.gbda.mapper.WJUserMapper.selectByRoleId"
+                    column="role_id">
+        </collection>
+        <collection property="wjRolePowerList" ofType="WJRolePower"
+                    select="com.wjwy.gbda.mapper.WJRolePowerMapper.selectPowerWithRole"
+                    column="role_id">
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        role_id, role_name, update_time
+    </sql>
+    <select id="selectForUser" parameterType="java.lang.Integer"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_role
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+            resultMap="AllResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_role
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from wj_role
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.wjwy.gbda.entity.WJRole"
+            keyProperty="roleId" useGeneratedKeys="true">
+        insert into wj_role (role_name, update_time)
+        values (#{roleName,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.wjwy.gbda.entity.WJRole"
+            keyProperty="roleId" useGeneratedKeys="true">
+        insert into wj_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleName != null">
+                role_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleName != null">
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.wjwy.gbda.entity.WJRole">
+        update wj_role
+        <set>
+            <if test="roleName != null">
+                role_name = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.wjwy.gbda.entity.WJRole">
+        update wj_role
+        set role_name   = #{roleName,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </update>
+</mapper>

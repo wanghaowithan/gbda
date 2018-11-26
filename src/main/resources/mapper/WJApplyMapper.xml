@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjwy.gbda.mapper.WJApplyMapper">
+    <resultMap id="BaseResultMap" type="com.wjwy.gbda.entity.WJApply">
+        <id column="apply_id" jdbcType="INTEGER" property="applyId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="name1" jdbcType="VARCHAR" property="name1"/>
+        <result column="duty1" jdbcType="VARCHAR" property="duty1"/>
+        <result column="political1" jdbcType="VARCHAR" property="political1"/>
+        <result column="name2" jdbcType="VARCHAR" property="name2"/>
+        <result column="duty2" jdbcType="VARCHAR" property="duty2"/>
+        <result column="political2" jdbcType="VARCHAR" property="political2"/>
+        <result column="apply_unit" jdbcType="VARCHAR" property="applyUnit"/>
+        <result column="apply_leader" jdbcType="VARCHAR"
+                property="applyLeader"/>
+        <result column="apply_reason" jdbcType="VARCHAR"
+                property="applyReason"/>
+        <result column="info" jdbcType="VARCHAR" property="info"/>
+        <result column="read_time" jdbcType="VARCHAR" property="readTime"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="A0100S" jdbcType="VARCHAR" property="a0100s"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="update_time" jdbcType="TIMESTAMP"
+                property="updateTime"/>
+        <result column="read_info" jdbcType="VARCHAR" property="readInfo"/>
+    </resultMap>
+    <resultMap id="AllResultMap" type="com.wjwy.gbda.entity.WJApply"
+               extends="BaseResultMap">
+        <association property="wjUser" javaType="com.wjwy.gbda.entity.WJUser"
+                     column="user_id"
+                     select="com.wjwy.gbda.mapper.WJUserMapper.selectForApply"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        apply_id, user_id, name1, duty1, political1, name2, duty2, political2,
+                  apply_unit,
+                  apply_leader, apply_reason, info, read_time, start_time,
+                  end_time,
+                  A0100S, status,
+                  update_time, read_info
+    </sql>
+    <select id="selectByUserId" parameterType="java.lang.Integer"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_apply
+        where user_id = #{userId}
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+            resultMap="AllResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_apply
+        where apply_id = #{applyId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from wj_apply
+        where apply_id = #{applyId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.wjwy.gbda.entity.WJApply"
+            useGeneratedKeys="true" keyProperty="applyId">
+        insert into wj_apply (user_id,
+                              name1,
+                              duty1,
+                              political1,
+                              name2,
+                              duty2,
+                              political2,
+                              apply_unit,
+                              apply_leader,
+                              apply_reason,
+                              info,
+                              read_time,
+                              start_time,
+                              end_time,
+                              A0100S,
+                              status,
+                              update_time,
+                              read_info)
+        values (#{userId,jdbcType=INTEGER},
+                #{name1,jdbcType=VARCHAR},
+                #{duty1,jdbcType=VARCHAR},
+                #{political1,jdbcType=VARCHAR},
+                #{name2,jdbcType=VARCHAR},
+                #{duty2,jdbcType=VARCHAR},
+                #{political2,jdbcType=VARCHAR},
+                #{applyUnit,jdbcType=VARCHAR},
+                #{applyLeader,jdbcType=VARCHAR},
+                #{applyReason,jdbcType=VARCHAR},
+                #{info,jdbcType=VARCHAR},
+                #{readTime,jdbcType=VARCHAR},
+                #{startTime,jdbcType=TIMESTAMP},
+                #{endTime,jdbcType=TIMESTAMP},
+                #{a0100s,jdbcType=VARCHAR},
+                #{status,jdbcType=VARCHAR},
+                #{updateTime,jdbcType=TIMESTAMP},
+                #{readInfo,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.wjwy.gbda.entity.WJApply"
+            useGeneratedKeys="true" keyProperty="applyId">
+        insert into wj_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="name1 != null">
+                name1,
+            </if>
+            <if test="duty1 != null">
+                duty1,
+            </if>
+            <if test="political1 != null">
+                political1,
+            </if>
+            <if test="name2 != null">
+                name2,
+            </if>
+            <if test="duty2 != null">
+                duty2,
+            </if>
+            <if test="political2 != null">
+                political2,
+            </if>
+            <if test="applyUnit != null">
+                apply_unit,
+            </if>
+            <if test="applyLeader != null">
+                apply_leader,
+            </if>
+            <if test="applyReason != null">
+                apply_reason,
+            </if>
+            <if test="info != null">
+                info,
+            </if>
+            <if test="readTime != null">
+                read_time,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="a0100s != null">
+                A0100S,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="readInfo != null">
+                read_info,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="name1 != null">
+                #{name1,jdbcType=VARCHAR},
+            </if>
+            <if test="duty1 != null">
+                #{duty1,jdbcType=VARCHAR},
+            </if>
+            <if test="political1 != null">
+                #{political1,jdbcType=VARCHAR},
+            </if>
+            <if test="name2 != null">
+                #{name2,jdbcType=VARCHAR},
+            </if>
+            <if test="duty2 != null">
+                #{duty2,jdbcType=VARCHAR},
+            </if>
+            <if test="political2 != null">
+                #{political2,jdbcType=VARCHAR},
+            </if>
+            <if test="applyUnit != null">
+                #{applyUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="applyLeader != null">
+                #{applyLeader,jdbcType=VARCHAR},
+            </if>
+            <if test="applyReason != null">
+                #{applyReason,jdbcType=VARCHAR},
+            </if>
+            <if test="info != null">
+                #{info,jdbcType=VARCHAR},
+            </if>
+            <if test="readTime != null">
+                #{readTime,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="a0100s != null">
+                #{a0100s,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="readInfo != null">
+                #{readInfo,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.wjwy.gbda.entity.WJApply">
+        update wj_apply
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="name1 != null">
+                name1 = #{name1,jdbcType=VARCHAR},
+            </if>
+            <if test="duty1 != null">
+                duty1 = #{duty1,jdbcType=VARCHAR},
+            </if>
+            <if test="political1 != null">
+                political1 = #{political1,jdbcType=VARCHAR},
+            </if>
+            <if test="name2 != null">
+                name2 = #{name2,jdbcType=VARCHAR},
+            </if>
+            <if test="duty2 != null">
+                duty2 = #{duty2,jdbcType=VARCHAR},
+            </if>
+            <if test="political2 != null">
+                political2 = #{political2,jdbcType=VARCHAR},
+            </if>
+            <if test="applyUnit != null">
+                apply_unit = #{applyUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="applyLeader != null">
+                apply_leader = #{applyLeader,jdbcType=VARCHAR},
+            </if>
+            <if test="applyReason != null">
+                apply_reason = #{applyReason,jdbcType=VARCHAR},
+            </if>
+            <if test="info != null">
+                info = #{info,jdbcType=VARCHAR},
+            </if>
+            <if test="readTime != null">
+                read_time = #{readTime,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="a0100s != null">
+                A0100S = #{a0100s,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="readInfo != null">
+                read_info = #{readInfo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where apply_id = #{applyId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.wjwy.gbda.entity.WJApply">
+        update wj_apply
+        set user_id      = #{userId,jdbcType=INTEGER},
+            name1        = #{name1,jdbcType=VARCHAR},
+            duty1        = #{duty1,jdbcType=VARCHAR},
+            political1   = #{political1,jdbcType=VARCHAR},
+            name2        = #{name2,jdbcType=VARCHAR},
+            duty2        = #{duty2,jdbcType=VARCHAR},
+            political2   = #{political2,jdbcType=VARCHAR},
+            apply_unit   = #{applyUnit,jdbcType=VARCHAR},
+            apply_leader = #{applyLeader,jdbcType=VARCHAR},
+            apply_reason = #{applyReason,jdbcType=VARCHAR},
+            info         = #{info,jdbcType=VARCHAR},
+            read_time    = #{readTime,jdbcType=VARCHAR},
+            start_time   = #{startTime,jdbcType=TIMESTAMP},
+            end_time     = #{endTime,jdbcType=TIMESTAMP},
+            A0100S       = #{a0100s,jdbcType=VARCHAR},
+            status       = #{status,jdbcType=VARCHAR},
+            update_time  = #{updateTime,jdbcType=TIMESTAMP},
+            read_info    = #{readInfo,jdbcType=VARCHAR}
+        where apply_id = #{applyId,jdbcType=INTEGER}
+    </update>
+</mapper>

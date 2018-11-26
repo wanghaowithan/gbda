@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjwy.gbda.mapper.WJLogMapper">
+    <resultMap id="BaseResultMap" type="com.wjwy.gbda.entity.WJLog">
+        <id column="log_id" jdbcType="VARCHAR" property="logId"/>
+        <result column="log_user_name" jdbcType="VARCHAR"
+                property="logUserName"/>
+        <result column="module" jdbcType="VARCHAR" property="module"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="time" jdbcType="TIMESTAMP" property="time"/>
+        <result column="log_num" jdbcType="VARCHAR" property="logNum"/>
+        <result column="commite" jdbcType="VARCHAR" property="commite"/>
+        <result column="update_time" jdbcType="TIMESTAMP"
+                property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        log_id, log_user_name, module, description, ip, time, log_num, commite,
+                update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_log
+        where log_id = #{logId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from wj_log
+        where log_id = #{logId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.wjwy.gbda.entity.WJLog">
+        <selectKey keyProperty="logId" resultType="String" order="BEFORE">
+            select newId()
+        </selectKey>
+        insert into wj_log (log_id, log_user_name, module,
+        description, ip, time,
+        log_num, commite, update_time
+        )
+        values (#{logId,jdbcType=VARCHAR}, #{logUserName,jdbcType=VARCHAR},
+        #{module,jdbcType=VARCHAR},
+        #{description,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR},
+        #{time,jdbcType=TIMESTAMP},
+        #{logNum,jdbcType=VARCHAR}, #{commite,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.wjwy.gbda.entity.WJLog">
+        <selectKey keyProperty="logId" resultType="String" order="BEFORE">
+            select newId()
+        </selectKey>
+        insert into wj_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="logId != null">
+                log_id,
+            </if>
+            <if test="logUserName != null">
+                log_user_name,
+            </if>
+            <if test="module != null">
+                module,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="time != null">
+                time,
+            </if>
+            <if test="logNum != null">
+                log_num,
+            </if>
+            <if test="commite != null">
+                commite,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="logId != null">
+                #{logId,jdbcType=VARCHAR},
+            </if>
+            <if test="logUserName != null">
+                #{logUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="module != null">
+                #{module,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="time != null">
+                #{time,jdbcType=TIMESTAMP},
+            </if>
+            <if test="logNum != null">
+                #{logNum,jdbcType=VARCHAR},
+            </if>
+            <if test="commite != null">
+                #{commite,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.wjwy.gbda.entity.WJLog">
+        update wj_log
+        <set>
+            <if test="logUserName != null">
+                log_user_name = #{logUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="module != null">
+                module = #{module,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                ip = #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="time != null">
+                time = #{time,jdbcType=TIMESTAMP},
+            </if>
+            <if test="logNum != null">
+                log_num = #{logNum,jdbcType=VARCHAR},
+            </if>
+            <if test="commite != null">
+                commite = #{commite,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where log_id = #{logId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.wjwy.gbda.entity.WJLog">
+        update wj_log
+        set log_user_name = #{logUserName,jdbcType=VARCHAR},
+            module        = #{module,jdbcType=VARCHAR},
+            description   = #{description,jdbcType=VARCHAR},
+            ip            = #{ip,jdbcType=VARCHAR},
+            time          = #{time,jdbcType=TIMESTAMP},
+            log_num       = #{logNum,jdbcType=VARCHAR},
+            commite       = #{commite,jdbcType=VARCHAR},
+            update_time   = #{updateTime,jdbcType=TIMESTAMP}
+        where log_id = #{logId,jdbcType=VARCHAR}
+    </update>
+</mapper>

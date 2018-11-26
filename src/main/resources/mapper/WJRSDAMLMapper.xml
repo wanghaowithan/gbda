@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjwy.gbda.mapper.WJRSDAMLMapper">
+    <resultMap id="BaseResultMap" type="com.wjwy.gbda.entity.WJRSDAML">
+        <id column="RSDAML000" jdbcType="VARCHAR" property="rsdaml000"/>
+        <result column="A0100" jdbcType="VARCHAR" property="a0100"/>
+        <result column="RSDAML002" jdbcType="VARCHAR" property="rsdaml002"/>
+        <result column="RSDAML003" jdbcType="VARCHAR" property="rsdaml003"/>
+        <result column="RSDAML004" jdbcType="VARCHAR" property="rsdaml004"/>
+        <result column="RSDAML005" jdbcType="NUMERIC" property="rsdaml005"/>
+        <result column="RSDAML006" jdbcType="VARCHAR" property="rsdaml006"/>
+        <result column="RSDAML007" jdbcType="VARCHAR" property="rsdaml007"/>
+        <result column="RSDAML008" jdbcType="VARCHAR" property="rsdaml008"/>
+        <result column="RSDAML009" jdbcType="VARCHAR" property="rsdaml009"/>
+        <result column="update_time" jdbcType="TIMESTAMP"
+                property="updateTime"/>
+    </resultMap>
+    <resultMap id="AllResultMap" type="com.wjwy.gbda.entity.WJRSDAML"
+               extends="BaseResultMap">
+        <association property="wja01" javaType="com.wjwy.gbda.entity.WJA01"
+                     column="A0100"
+                     select="com.wjwy.gbda.mapper.WJA01Mapper.selectForRSDAML">
+        </association>
+        <collection property="wjrsdawjList" ofType="WJRSDAWJ"
+                    column="RSDAML000"
+                    select="com.wjwy.gbda.mapper.WJRSDAWJMapper.selectByRSDAML">
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        RSDAML000, A0100, RSDAML002, RSDAML003, RSDAML004, RSDAML005, RSDAML006,
+                   RSDAML007,
+                   RSDAML008, RSDAML009, update_time
+    </sql>
+    <select id="selectByA01" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_RSDAML
+        where A0100 = #{a0100,jdbcType=VARCHAR}
+    </select>
+    <select id="selectForRSDAWJ" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_RSDAML
+        where RSDAML000 = #{rsdaml000,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String"
+            resultMap="AllResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wj_RSDAML
+        where RSDAML000 = #{rsdaml000,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from wj_RSDAML
+        where RSDAML000 = #{rsdaml000,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.wjwy.gbda.entity.WJRSDAML">
+        <selectKey keyProperty="rsdaml000" resultType="String" order="BEFORE">
+            select newId()
+        </selectKey>
+        insert into wj_RSDAML (RSDAML000,
+        A0100,
+        RSDAML002,
+        RSDAML003,
+        RSDAML004,
+        RSDAML005,
+        RSDAML006,
+        RSDAML007,
+        RSDAML008,
+        RSDAML009,
+        update_time)
+        values (#{rsdaml000,jdbcType=VARCHAR},
+        #{a0100,jdbcType=VARCHAR},
+        #{rsdaml002,jdbcType=VARCHAR},
+        #{rsdaml003,jdbcType=VARCHAR},
+        #{rsdaml004,jdbcType=VARCHAR},
+        #{rsdaml005,jdbcType=NUMERIC},
+        #{rsdaml006,jdbcType=VARCHAR},
+        #{rsdaml007,jdbcType=VARCHAR},
+        #{rsdaml008,jdbcType=VARCHAR},
+        #{rsdaml009,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.wjwy.gbda.entity.WJRSDAML">
+        <selectKey keyProperty="rsdaml000" resultType="String" order="BEFORE">
+            select newId()
+        </selectKey>
+        insert into wj_RSDAML
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rsdaml000 != null">
+                RSDAML000,
+            </if>
+            <if test="a0100 != null">
+                A0100,
+            </if>
+            <if test="rsdaml002 != null">
+                RSDAML002,
+            </if>
+            <if test="rsdaml003 != null">
+                RSDAML003,
+            </if>
+            <if test="rsdaml004 != null">
+                RSDAML004,
+            </if>
+            <if test="rsdaml005 != null">
+                RSDAML005,
+            </if>
+            <if test="rsdaml006 != null">
+                RSDAML006,
+            </if>
+            <if test="rsdaml007 != null">
+                RSDAML007,
+            </if>
+            <if test="rsdaml008 != null">
+                RSDAML008,
+            </if>
+            <if test="rsdaml009 != null">
+                RSDAML009,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rsdaml000 != null">
+                #{rsdaml000,jdbcType=VARCHAR},
+            </if>
+            <if test="a0100 != null">
+                #{a0100,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml002 != null">
+                #{rsdaml002,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml003 != null">
+                #{rsdaml003,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml004 != null">
+                #{rsdaml004,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml005 != null">
+                #{rsdaml005,jdbcType=NUMERIC},
+            </if>
+            <if test="rsdaml006 != null">
+                #{rsdaml006,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml007 != null">
+                #{rsdaml007,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml008 != null">
+                #{rsdaml008,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml009 != null">
+                #{rsdaml009,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.wjwy.gbda.entity.WJRSDAML">
+        update wj_RSDAML
+        <set>
+            <if test="a0100 != null">
+                A0100 = #{a0100,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml002 != null">
+                RSDAML002 = #{rsdaml002,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml003 != null">
+                RSDAML003 = #{rsdaml003,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml004 != null">
+                RSDAML004 = #{rsdaml004,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml005 != null">
+                RSDAML005 = #{rsdaml005,jdbcType=NUMERIC},
+            </if>
+            <if test="rsdaml006 != null">
+                RSDAML006 = #{rsdaml006,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml007 != null">
+                RSDAML007 = #{rsdaml007,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml008 != null">
+                RSDAML008 = #{rsdaml008,jdbcType=VARCHAR},
+            </if>
+            <if test="rsdaml009 != null">
+                RSDAML009 = #{rsdaml009,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where RSDAML000 = #{rsdaml000,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.wjwy.gbda.entity.WJRSDAML">
+        update wj_RSDAML
+        set A0100       = #{a0100,jdbcType=VARCHAR},
+            RSDAML002   = #{rsdaml002,jdbcType=VARCHAR},
+            RSDAML003   = #{rsdaml003,jdbcType=VARCHAR},
+            RSDAML004   = #{rsdaml004,jdbcType=VARCHAR},
+            RSDAML005   = #{rsdaml005,jdbcType=NUMERIC},
+            RSDAML006   = #{rsdaml006,jdbcType=VARCHAR},
+            RSDAML007   = #{rsdaml007,jdbcType=VARCHAR},
+            RSDAML008   = #{rsdaml008,jdbcType=VARCHAR},
+            RSDAML009   = #{rsdaml009,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where RSDAML000 = #{rsdaml000,jdbcType=VARCHAR}
+    </update>
+</mapper>
