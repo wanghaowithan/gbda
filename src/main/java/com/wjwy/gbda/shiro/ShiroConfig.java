@@ -24,6 +24,13 @@ import java.util.LinkedHashMap;
 @Configuration
 @ComponentScan
 public class ShiroConfig {
+    /**
+     * @param shiroRealm          shiroRealm配置
+     * @param sessionManager      sessionManager配置
+     * @param shiroEhcacheManager shiroEhcacheManager配置
+     * @param rememberMeManager   rememberMeManager配置
+     * @return securityManager配置
+     */
     @Bean(name = "securityManager")
     public DefaultWebSecurityManager securityManager(@Qualifier("shiroRealm") ShiroRealm shiroRealm, @Qualifier("sessionManager") DefaultWebSessionManager sessionManager, @Qualifier("shiroEhcacheManager") EhCacheManager shiroEhcacheManager, @Qualifier("rememberMeManager") CookieRememberMeManager rememberMeManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
