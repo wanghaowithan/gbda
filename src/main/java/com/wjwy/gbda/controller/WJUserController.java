@@ -64,7 +64,7 @@ public class WJUserController {
             UsernamePasswordToken token =
                     new UsernamePasswordToken(wjUser.getUserName(), wjUser.getPassword(),
                             "login");
-            token.setRememberMe(true);//rememberMe设置
+            token.setRememberMe(true);//rememberMe 设置
             Subject currentUser = SecurityUtils.getSubject();
             logger.info("对用户[" + wjUser.getUserName() + "]进行登录验证..验证开始");
             try {
