@@ -52,7 +52,7 @@ public class WJUserController {
         return "index";
     }
 
-    @RequestMapping("indexLogin")
+    @RequestMapping("/indexLogin")
     public String test() {
         return "login";
     }
@@ -64,7 +64,7 @@ public class WJUserController {
             UsernamePasswordToken token =
                     new UsernamePasswordToken(wjUser.getUserName(), wjUser.getPassword(),
                             "login");
-            token.setRememberMe(true);
+            token.setRememberMe(true);//rememberMe设置
             Subject currentUser = SecurityUtils.getSubject();
             logger.info("对用户[" + wjUser.getUserName() + "]进行登录验证..验证开始");
             try {
@@ -106,16 +106,16 @@ public class WJUserController {
     /**
      * ajax登录请求接口方式登陆
      *
-     * @param username 用户名
+     * @param userName 用户名
      * @param password 密码
      * @return 返回登录信息
      */
     @RequestMapping(value = "/ajaxLogin")
     @ResponseBody
-    public Map<String, Object> submitLogin(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
+    public Map<String, Object> submitLogin(@RequestParam(value = "userName") String userName, @RequestParam(value = "password") String password) {
         Map<String, Object> resultMap = new LinkedHashMap<>();
         try {
-            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+            UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
             SecurityUtils.getSubject().login(token);
             resultMap.put("status", 200);
             resultMap.put("message", "登录成功");
@@ -129,6 +129,8 @@ public class WJUserController {
     //登出
     @RequestMapping(value = "/logout")
     public String logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
         return "logout";
     }
 

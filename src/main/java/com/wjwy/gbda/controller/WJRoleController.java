@@ -5,15 +5,15 @@ import com.wjwy.gbda.entity.WJRole;
 import com.wjwy.gbda.service.WJRoleService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
 @RequestMapping(value = "/role")
-@RestController
+@Controller
 @EnableTransactionManagement
 public class WJRoleController {
     @Getter
@@ -22,6 +22,7 @@ public class WJRoleController {
     private WJRoleService wjRoleService;
 
     @RequestMapping(value = "/roleOne")
+    @ResponseBody
     //@SystemLog(module = "用户组模块", log_num = "R0100", methods = "用户组模块-查询")
     public JSONObject findOne() {
         WJRole wjRole = wjRoleService.selectByPrimaryKey(1);

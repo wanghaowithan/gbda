@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@EnableCaching
 @MapperScan("com.wjwy.gbda.mapper")
 @ServletComponentScan
 public class GbdaApplication {

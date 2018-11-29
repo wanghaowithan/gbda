@@ -15,18 +15,18 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShiroRealm extends AuthorizingRealm {
     private Logger logger = LoggerFactory.getLogger(ShiroRealm.class);
-    @Resource
+    @Autowired
     @Getter
     @Setter
     private WJUserService wjuserService;
-    @Resource
+    @Autowired
     @Getter
     @Setter
     private WJRoleService wjRoleService;
