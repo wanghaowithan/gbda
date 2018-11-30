@@ -58,7 +58,7 @@ public class WJUserController {
     }
 
     //登陆验证，这里方便url测试，正式上线需要使用POST方式提交
-    @RequestMapping(value = "/login")
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
     public String login(WJUser wjUser) {
         if (wjUser.getUserName() != null && wjUser.getPassword() != null) {
             UsernamePasswordToken token =

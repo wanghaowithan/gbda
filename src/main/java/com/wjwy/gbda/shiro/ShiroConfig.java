@@ -5,6 +5,7 @@ import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
+import org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -112,11 +113,13 @@ public class ShiroConfig {
         sessionManager.setGlobalSessionTimeout(1200000);
         sessionManager.setDeleteInvalidSessions(true);
         sessionManager.setSessionValidationSchedulerEnabled(true);
+        sessionManager.setSessionValidationInterval(1200000);
         sessionManager.setSessionDAO(sessionDAO);
         sessionManager.setSessionIdCookieEnabled(true);
         sessionManager.setSessionIdCookie(sessionIdCookie);
         return sessionManager;
     }
+
 
     @Bean(name = "securityManager")
     public DefaultWebSecurityManager securityManager(@Qualifier("shiroRealm") ShiroRealm shiroRealm, @Qualifier("sessionManager") DefaultWebSessionManager sessionManager, @Qualifier("shiroEhcacheManager") EhCacheManager shiroEhcacheManager, @Qualifier("rememberMeManager") CookieRememberMeManager rememberMeManager) {
@@ -143,6 +146,7 @@ public class ShiroConfig {
         shiroFilter.setUnauthorizedUrl("/user/error");
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/user/index", "anon");
+        filterChainDefinitionMap.put("/user/login", "anon");
         filterChainDefinitionMap.put("/user/indexLogin", "anon");
         //filterChainDefinitionMap.put("/loginUser", "anon");
         //filterChainDefinitionMap.put("/admin", "roles[admin]");

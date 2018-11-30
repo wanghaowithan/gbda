@@ -37,21 +37,23 @@ public class ShiroRealm extends AuthorizingRealm {
      * 当页面上碰到Shiro标签时就会调用这个方法，当第一次碰到时才调用这个方法
      */
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection pc) {
+        //声明AuthorizationInfo的一个子类对象
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //1.得到用户信息
         WJUser user = (WJUser) pc.fromRealm(this.getName()).iterator().next();
         //2.通过对象导航得到用户的角色
         WJRole roles = wjRoleService.selectByPrimaryKey(user.getRoleId());
-        List<String> permissions = new ArrayList<>();
-        //得到角色，并通过对象导航，进一步加载这个角色下的模块
-        List<WJRolePower> wjRolePowers = roles.getWjRolePowerList();
-        //遍历权限的集合，得到每个模块的信息
-        for (WJRolePower rolePower : wjRolePowers) {
-            permissions.add(rolePower.getWjPower().getPowerUrl());
+        if (roles != null) {
+            List<String> permissions = new ArrayList<>();
+            //得到角色，并通过对象导航，进一步加载这个角色下的模块
+            List<WJRolePower> wjRolePowers = roles.getWjRolePowerList();
+            //遍历权限的集合，得到每个模块的信息
+            for (WJRolePower rolePower : wjRolePowers) {
+                permissions.add(rolePower.getWjPower().getPowerUrl());
+            }
+            info.addStringPermissions(permissions);//权限集合
+            info.addRole(roles.getRoleName());//角色
         }
-        //声明AuthorizationInfo的一个子类对象
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.addRole(roles.getRoleName());//角色
-        info.addStringPermissions(permissions);//权限集合
         return info;
     }
 
