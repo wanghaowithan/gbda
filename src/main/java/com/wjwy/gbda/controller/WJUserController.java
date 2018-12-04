@@ -3,6 +3,7 @@ package com.wjwy.gbda.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.wjwy.gbda.entity.WJUser;
 import com.wjwy.gbda.service.WJUserService;
+import com.wjwy.gbda.util.ReturnResult;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.shiro.SecurityUtils;
@@ -16,17 +17,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @RequestMapping(value = "/user")
 @Controller
 @EnableTransactionManagement
 public class WJUserController {
     private static Logger logger = LoggerFactory.getLogger(WJUserController.class);
-    @Resource
     @Getter
     @Setter
+    @Resource
     private WJUserService wjUserService;
 
     @ResponseBody
@@ -57,8 +56,55 @@ public class WJUserController {
         return "login";
     }
 
+    /**
+     * ajax登录请求借口
+     *
+     * @param wjUser 用户信息
+     * @return ajax返回值
+     */
+    @PostMapping("ajaxLogin")
+    @ResponseBody
+    public ReturnResult adminLogin(WJUser wjUser) {
+        ReturnResult result = new ReturnResult();
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token =
+                new UsernamePasswordToken(wjUser.getUserName(),
+                        wjUser.getPassword());
+        try {
+            subject.login(token);
+            result.setToken(subject.getSession().getId());
+            result.setMsg("登录成功");
+            result.setCode(200);
+        } catch (IncorrectCredentialsException e) {
+            result.setMsg("密码错误");
+            result.setCode(400);
+        } catch (LockedAccountException e) {
+            result.setMsg("登录失败，该用户已被冻结");
+            result.setCode(400);
+        } catch (AuthenticationException e) {
+            result.setMsg("该用户不存在");
+            result.setCode(400);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 未登录，shiro应重定向到登录界面，此处返回未登录状态信息由前端控制跳转页面
+     *
+     * @return 状态码信息
+     */
+    @RequestMapping(value = "/unLogin")
+    public ReturnResult unLogin() {
+        ReturnResult result = new ReturnResult();
+        result.setMsg("未登录");
+        result.setCode(400);
+        return result;
+    }
+
     //登陆验证，这里方便url测试，正式上线需要使用POST方式提交
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(WJUser wjUser) {
         if (wjUser.getUserName() != null && wjUser.getPassword() != null) {
             UsernamePasswordToken token =
@@ -81,14 +127,14 @@ public class WJUserController {
                 token.clear();
                 System.out.println("用户[" + wjUser.getUserName() + "]登录认证失败,"
                                    + "重新登陆");
-                return "redirect:/user/test";
+                return "redirect:/user/indexLogin";
             } catch (IncorrectCredentialsException ice) {
                 logger.info("对用户[" + wjUser.getUserName()
                             + "]进行登录验证..验证失败-password didn't match");
                 token.clear();
                 System.out.println("用户[" + wjUser.getUserName() + "]登录认证失败,"
                                    + "重新登陆");
-                return "redirect:/user/test";
+                return "redirect:/user/indexLogin";
             } catch (LockedAccountException lae) {
                 logger.info("对用户[" + wjUser.getUserName()
                             + "]进行登录验证..验证失败-account is locked in the system");
@@ -101,29 +147,6 @@ public class WJUserController {
             }
         }
         return null;
-    }
-
-    /**
-     * ajax登录请求接口方式登陆
-     *
-     * @param userName 用户名
-     * @param password 密码
-     * @return 返回登录信息
-     */
-    @RequestMapping(value = "/ajaxLogin")
-    @ResponseBody
-    public Map<String, Object> submitLogin(@RequestParam(value = "userName") String userName, @RequestParam(value = "password") String password) {
-        Map<String, Object> resultMap = new LinkedHashMap<>();
-        try {
-            UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
-            SecurityUtils.getSubject().login(token);
-            resultMap.put("status", 200);
-            resultMap.put("message", "登录成功");
-        } catch (Exception e) {
-            resultMap.put("status", 500);
-            resultMap.put("message", e.getMessage());
-        }
-        return resultMap;
     }
 
     //登出

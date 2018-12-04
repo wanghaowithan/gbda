@@ -5,7 +5,6 @@ import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
-import org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -16,8 +15,11 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.util.LinkedHashMap;
 
@@ -26,6 +28,16 @@ public class ShiroConfig {
     @Bean(name = "sessionIdGenerator")
     public JavaUuidSessionIdGenerator sessionIdGenerator() {
         return new JavaUuidSessionIdGenerator();
+    }
+
+    /**
+     * 注册全局异常处理
+     *
+     * @return MyExceptionHandler
+     */
+    @Bean(name = "exceptionHandler")
+    public HandlerExceptionResolver handlerExceptionResolver() {
+        return new MyExceptionHandler();
     }
 
     @Bean(name = "sessionIdCookie")
@@ -73,6 +85,7 @@ public class ShiroConfig {
     }
 
     @Bean(name = "defaultAdvisorAutoProxyCreator")
+    @ConditionalOnMissingBean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator =
                 new DefaultAdvisorAutoProxyCreator();
@@ -98,6 +111,7 @@ public class ShiroConfig {
     }
 
     @Bean(name = "shiroRealm")
+    @DependsOn("lifecycleBeanPostProcessor")
     public ShiroRealm shiroRealm(@Qualifier("passwordMatcher") CustomCredentialsMatcher passwordMatcher) {
         ShiroRealm shiroRealm = new ShiroRealm();
         shiroRealm.setCredentialsMatcher(passwordMatcher);
@@ -109,7 +123,9 @@ public class ShiroConfig {
 
     @Bean(name = "sessionManager")
     public DefaultWebSessionManager sessionManager(@Qualifier("sessionDAO") EnterpriseCacheSessionDAO sessionDAO, @Qualifier("sessionIdCookie") SimpleCookie sessionIdCookie) {
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        //MySessionManager sessionManager=new MySessionManager(); ajax登录使用
+        DefaultWebSessionManager sessionManager =
+                new DefaultWebSessionManager();//测试使用
         sessionManager.setGlobalSessionTimeout(1200000);
         sessionManager.setDeleteInvalidSessions(true);
         sessionManager.setSessionValidationSchedulerEnabled(true);
@@ -120,14 +136,13 @@ public class ShiroConfig {
         return sessionManager;
     }
 
-
     @Bean(name = "securityManager")
     public DefaultWebSecurityManager securityManager(@Qualifier("shiroRealm") ShiroRealm shiroRealm, @Qualifier("sessionManager") DefaultWebSessionManager sessionManager, @Qualifier("shiroEhcacheManager") EhCacheManager shiroEhcacheManager, @Qualifier("rememberMeManager") CookieRememberMeManager rememberMeManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(shiroRealm);
         securityManager.setSessionManager(sessionManager);
         securityManager.setCacheManager(shiroEhcacheManager);
         securityManager.setRememberMeManager(rememberMeManager);
+        securityManager.setRealm(shiroRealm);
         return securityManager;
     }
 
@@ -148,6 +163,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/index", "anon");
         filterChainDefinitionMap.put("/user/login", "anon");
         filterChainDefinitionMap.put("/user/indexLogin", "anon");
+        filterChainDefinitionMap.put("/user/ajaxLogin", "anon");
         //filterChainDefinitionMap.put("/loginUser", "anon");
         //filterChainDefinitionMap.put("/admin", "roles[admin]");
         //filterChainDefinitionMap.put("/edit", "perms[delete]");
