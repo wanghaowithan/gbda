@@ -1,7 +1,6 @@
 package com.wjwy.gbda.shiro;
 
 import com.alibaba.fastjson.support.spring.FastJsonJsonView;
-import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.servlet.HandlerExceptionResolver;

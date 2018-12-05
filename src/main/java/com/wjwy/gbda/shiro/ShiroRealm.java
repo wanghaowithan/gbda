@@ -37,6 +37,7 @@ public class ShiroRealm extends AuthorizingRealm {
      * 当页面上碰到Shiro标签时就会调用这个方法，当第一次碰到时才调用这个方法
      */
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection pc) {
+        System.out.println("权限认证开始.......");
         //声明AuthorizationInfo的一个子类对象
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //1.得到用户信息
