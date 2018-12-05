@@ -75,6 +75,7 @@ public class WJUserController {
             result.setToken(subject.getSession().getId());
             result.setMsg("登录成功");
             result.setCode(200);
+            result.setResult(subject.getPrincipal());//已登录用户信息
         } catch (IncorrectCredentialsException e) {
             result.setMsg("密码错误");
             result.setCode(400);
@@ -147,14 +148,6 @@ public class WJUserController {
             }
         }
         return null;
-    }
-
-    //登出
-    @RequestMapping(value = "/logout")
-    public String logout() {
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
-        return "logout";
     }
 
     //错误页面展示
