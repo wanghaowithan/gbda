@@ -1,6 +1,7 @@
 package com.wjwy.gbda.mapper;
 
 import com.wjwy.gbda.entity.WJPower;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,13 +9,13 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface WJPowerMapper {
-    int deleteByPrimaryKey(Integer powerId);//根据主键删除
+    int deleteByPrimaryKey(@Param("powerId") Integer powerId);//根据主键删除
 
     int insert(WJPower record);//插入所有数据
 
     int insertSelective(WJPower record);//插入部分数据
 
-    WJPower selectByPrimaryKey(Integer powerId);//根据主键查询
+    WJPower selectByPrimaryKey(@Param("powerId") Integer powerId);//根据主键查询
 
     int updateByPrimaryKeySelective(WJPower record);//更新部分数据
 
