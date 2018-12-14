@@ -1,7 +1,6 @@
 package com.wjwy.gbda.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wjwy.gbda.entity.WJLog;
 import com.wjwy.gbda.entity.WJRole;
 import com.wjwy.gbda.service.WJRoleService;
 import com.wjwy.gbda.util.ReturnResult;

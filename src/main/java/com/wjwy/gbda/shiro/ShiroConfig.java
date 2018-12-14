@@ -94,7 +94,7 @@ public class ShiroConfig {
         formAuthenticationFilter.setUsernameParam("userName");
         formAuthenticationFilter.setPasswordParam("password");
         formAuthenticationFilter.setRememberMeParam("rememberMe");
-        formAuthenticationFilter.setLoginUrl("/login");
+        formAuthenticationFilter.setLoginUrl("/user/login");
         return formAuthenticationFilter;
     }
 

@@ -68,7 +68,7 @@ public class WJUserController {
      */
     @GetMapping("ajaxLogin")
     @ResponseBody
-    public ReturnResult adminLogin(WJUser wjUser) {
+    public ReturnResult ajaxLogin(WJUser wjUser) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token =
                 new UsernamePasswordToken(wjUser.getUserName(),
