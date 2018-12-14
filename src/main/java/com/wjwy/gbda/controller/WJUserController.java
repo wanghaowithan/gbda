@@ -27,9 +27,13 @@ public class WJUserController {
     @Setter
     @Resource
     private WJUserService wjUserService;
+    @Getter
+    @Setter
+    @Resource
+    private ReturnResult returnResult;
 
     @ResponseBody
-    @RequestMapping(value = "/One")
+    @GetMapping(value = "/One")
     @RequiresPermissions("user:list")
     public JSONObject findOne() {
         WJUser wjUser = wjUserService.selectByPrimaryKey(1);
@@ -40,18 +44,18 @@ public class WJUserController {
 
     //@RequiresPermissions("user/list")//shiro权限控制注解
     //登录成功后，跳转的页面
-    @RequestMapping("/success")
+    @GetMapping("/success")
     public String success() {
         return "success";
     }
 
     //未登录，可以访问的页面
-    @RequestMapping("/index")
+    @GetMapping("/index")
     public String index() {
         return "index";
     }
 
-    @RequestMapping("/indexLogin")
+    @GetMapping("/indexLogin")
     public String test() {
         return "login";
     }
@@ -62,33 +66,32 @@ public class WJUserController {
      * @param wjUser 用户信息
      * @return ajax返回值
      */
-    @PostMapping("ajaxLogin")
+    @GetMapping("ajaxLogin")
     @ResponseBody
     public ReturnResult adminLogin(WJUser wjUser) {
-        ReturnResult result = new ReturnResult();
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token =
                 new UsernamePasswordToken(wjUser.getUserName(),
                         wjUser.getPassword());
         try {
             subject.login(token);
-            result.setToken(subject.getSession().getId());
-            result.setMsg("登录成功");
-            result.setCode(200);
-            result.setResult(subject.getPrincipal());//已登录用户信息
+            returnResult.setToken(subject.getSession().getId());
+            returnResult.setMsg("登录成功");
+            returnResult.setCode(200);
+            returnResult.setResult(subject.getPrincipal());//已登录用户信息
         } catch (IncorrectCredentialsException e) {
-            result.setMsg("密码错误");
-            result.setCode(400);
+            returnResult.setMsg("密码错误");
+            returnResult.setCode(400);
         } catch (LockedAccountException e) {
-            result.setMsg("登录失败，该用户已被冻结");
-            result.setCode(400);
+            returnResult.setMsg("登录失败，该用户已被冻结");
+            returnResult.setCode(400);
         } catch (AuthenticationException e) {
-            result.setMsg("该用户不存在");
-            result.setCode(400);
+            returnResult.setMsg("该用户不存在");
+            returnResult.setCode(400);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
+        return returnResult;
     }
 
     /**
@@ -96,16 +99,15 @@ public class WJUserController {
      *
      * @return 状态码信息
      */
-    @RequestMapping(value = "/unLogin")
+    @GetMapping(value = "/unLogin")
     public ReturnResult unLogin() {
-        ReturnResult result = new ReturnResult();
-        result.setMsg("未登录");
-        result.setCode(400);
-        return result;
+        returnResult.setMsg("未登录");
+        returnResult.setCode(400);
+        return returnResult;
     }
 
     //登陆验证，这里方便url测试，正式上线需要使用POST方式提交
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @GetMapping(value = "/login")
     public String login(WJUser wjUser) {
         if (wjUser.getUserName() != null && wjUser.getPassword() != null) {
             UsernamePasswordToken token =
@@ -154,5 +156,79 @@ public class WJUserController {
     @GetMapping("/403")
     public String error() {
         return "error";
+    }
+
+    /**
+     * 根据主键删除用户
+     *
+     * @param userId 用户ID
+     * @return 状态码信息
+     */
+    @DeleteMapping("/deleteById/{userId}")
+    @ResponseBody
+    public ReturnResult deleteByPrimaryKey(@PathVariable("userId") Integer userId) {
+        return returnResult.getReturnResult(wjUserService.deleteByPrimaryKey(userId), returnResult, userId, "删除");
+    }
+
+    /**
+     * 插入完整用户数据
+     *
+     * @param record 完整用户数据
+     * @return 状态码信息
+     */
+    @PostMapping("/insertAll")
+    @ResponseBody
+    public ReturnResult insert(WJUser record) {
+        return returnResult.getReturnResult(wjUserService.insert(record),
+                returnResult, record, "插入");
+    }
+
+    /**
+     * 插入部分用户数据
+     *
+     * @param record 部分用户数据
+     * @return 状态码信息
+     */
+    @PostMapping("/insert")
+    @ResponseBody
+    public ReturnResult insertSelective(WJUser record) {
+        return returnResult.getReturnResult(wjUserService.insertSelective(record), returnResult, record, "插入");
+    }
+
+    /**
+     * 根据主键查询用户信息
+     *
+     * @param userId 用户ID
+     * @return 状态码信息
+     */
+    @GetMapping("/selectOne/{userId}")
+    @ResponseBody
+    public ReturnResult selectByPrimaryKey(@PathVariable("userId") Integer userId) {
+        WJUser wjUser = wjUserService.selectByPrimaryKey(userId);
+        return returnResult.getSelectReturnResult(returnResult, wjUser, "查询");
+    }
+
+    /**
+     * 更新部分用户数据
+     *
+     * @param record 部分用户数据
+     * @return 状态码信息
+     */
+    @PutMapping("/update")
+    @ResponseBody
+    public ReturnResult updateByPrimaryKeySelective(WJUser record) {
+        return returnResult.getReturnResult(wjUserService.updateByPrimaryKeySelective(record), returnResult, record, "修改");
+    }
+
+    /**
+     * 更新完整用户数据
+     *
+     * @param record 完整用户数据
+     * @return 状态码信息
+     */
+    @PutMapping("/updateAll")
+    @ResponseBody
+    public ReturnResult updateByPrimaryKey(WJUser record) {
+        return returnResult.getReturnResult(wjUserService.updateByPrimaryKey(record), returnResult, record, "修改");
     }
 }
