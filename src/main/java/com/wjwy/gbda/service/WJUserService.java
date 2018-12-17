@@ -2,7 +2,6 @@ package com.wjwy.gbda.service;
 
 import com.wjwy.gbda.entity.WJUser;
 
-import java.util.List;
 
 /**
  * 用户信息service

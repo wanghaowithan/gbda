@@ -1,11 +1,9 @@
 package com.wjwy.gbda.util;
 
-import com.wjwy.gbda.entity.WJUser;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 
 /**

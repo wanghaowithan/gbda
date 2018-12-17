@@ -1,7 +1,6 @@
 package com.wjwy.gbda.entity;
 
 import lombok.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.List;
 
