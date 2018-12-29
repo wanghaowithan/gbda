@@ -23,6 +23,9 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.util.LinkedHashMap;
 
+/**
+ * shiro配置文件
+ */
 @Configuration
 public class ShiroConfig {
     /**

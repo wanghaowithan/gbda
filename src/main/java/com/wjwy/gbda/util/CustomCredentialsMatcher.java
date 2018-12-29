@@ -5,6 +5,9 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 
+/**
+ * 密码比较过滤器
+ */
 public class CustomCredentialsMatcher extends SimpleCredentialsMatcher {
     /**
      * 重写了密码比较的方法
